@@ -8,10 +8,6 @@
                 <a href="{{ route('admin.harga-standar.compare') }}" class="px-4 py-2 font-bold text-white bg-green-500 rounded hover:bg-green-700">
                     Bandingkan Harga
                 </a>
-                <a href="{{ route('admin.harga-standar.export') }}" class="px-4 py-2 font-bold text-white bg-gray-500 rounded hover:bg-gray-700">
-                    Export CSV
-                </a>
-            </div>
         </div>
     </x-slot>
 
