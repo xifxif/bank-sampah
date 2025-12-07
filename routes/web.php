@@ -142,3 +142,12 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
         return redirect('/');
     })->name('dashboard');
+
+    use Illuminate\Support\Facades\Artisan;
+
+Route::get('/run-migrate', function () {
+    Artisan::call('migrate --force');
+    Artisan::call('db:seed --force');
+
+    return "Migrate + Seed Sukses 🚀";
+});
