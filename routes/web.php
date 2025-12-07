@@ -1,5 +1,11 @@
 <?php
 
+Route::get('/run-migrate', function () {
+    \Artisan::call('migrate --force');
+    \Artisan::call('db:seed --force');
+    return 'migrated';
+});
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WelcomeController;
