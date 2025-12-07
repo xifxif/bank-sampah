@@ -156,24 +156,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
 Route::get('/reset-db', function () {
-    // MATIKAN FOREIGN KEY
-    Schema::disableForeignKeyConstraints();
-
-    // AMBIL SEMUA TABEL
-    $tables = DB::select('SHOW TABLES');
-
-    foreach ($tables as $table) {
-        $tableName = array_values((array) $table)[0];
-        Schema::drop($tableName);
-    }
-
-    Schema::enableForeignKeyConstraints();
-
-    // MIGRATE ULANG
-    Artisan::call('migrate', ['--force' => true]);
-
-    // SEEDER (kalau ada)
+    Artisan::call('migrate:fresh', ['--force' => true]);
     Artisan::call('db:seed', ['--force' => true]);
 
-    return "DB VERY CLEAN ✔ ALL TABLE RECREATED ✔";
+    return "Database reset & seeded successfully!";
 });
