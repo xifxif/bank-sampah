@@ -1,11 +1,5 @@
 <?php
 
-Route::get('/run-migrate', function () {
-    \Artisan::call('migrate --force');
-    \Artisan::call('db:seed --force');
-    return 'migrated';
-});
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WelcomeController;
@@ -143,21 +137,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         return redirect('/');
     })->name('dashboard');
 
-    use Illuminate\Support\Facades\Artisan;
-
-Route::get('/run-migrate', function () {
-    Artisan::call('migrate --force');
-    Artisan::call('db:seed --force');
-
-    return "Migrate + Seed Sukses 🚀";
-});
-
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
-
-Route::get('/reset-db', function () {
-    Artisan::call('migrate:fresh', ['--force' => true]);
-    Artisan::call('db:seed', ['--force' => true]);
-
-    return "Database reset & seeded successfully!";
-});
+// use Illuminate\Support\Facades\Artisan;
+// use Illuminate\Support\Facades\Schema;
+// use Illuminate\Support\Facades\DB;
