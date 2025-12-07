@@ -9,12 +9,26 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+    // public function up(): void
+    // {
+    //     Schema::table('users', function (Blueprint $table) {
+    //         $table->foreignId('bank_sampah_id')->nullable()->after('email')->constrained('bank_sampah')->onDelete('set null');
+    //     });
+    // }
+
     public function up(): void
-    {
-        Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('bank_sampah_id')->nullable()->after('email')->constrained('bank_sampah')->onDelete('set null');
-        });
-    }
+{
+    Schema::table('users', function (Blueprint $table) {
+        if (!Schema::hasColumn('users', 'bank_sampah_id')) {
+            $table->foreignId('bank_sampah_id')
+                ->nullable()
+                ->after('email')
+                ->constrained('bank_sampah')
+                ->onDelete('set null');
+        }
+    });
+}
+
 
     /**
      * Reverse the migrations.
