@@ -14,7 +14,7 @@ WORKDIR /var/www/html
 # Copy project
 COPY . .
 
-# Install Composer
+# Install Composer dependencies
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
     && composer install --no-interaction --optimize-autoloader
@@ -27,10 +27,9 @@ RUN npm run build
 RUN php artisan view:clear
 RUN php artisan config:clear
 RUN php artisan optimize:clear
-RUN php artisan migrate:fresh --force
 
-# Expose port
+# Expose port Laravel
 EXPOSE 8080
 
-# Start Laravel
-CMD php artisan serve --host=0.0.0.0 --port=8080
+# Start Laravel server
+CMD php artisan serve --host=0.0.0.
