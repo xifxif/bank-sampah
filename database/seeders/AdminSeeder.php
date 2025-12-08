@@ -8,27 +8,30 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         // Create Super Admin
-        $admin = User::create([
-            'name' => 'Admin DLH',
-            'email' => 'admin@dlh.go.id',
-            'password' => Hash::make('password'),
-            'email_verified_at' => now(),
-        ]);
-        $banksampah = User::create([
-            'name' => 'Admin pengelola',
-            'email' => 'pedulilingkungan@gmail.com',
-            'password' => Hash::make('password'),
-            'email_verified_at' => now(),
-            'bank_sampah_id' => 1,
-        ]);
+        $admin = User::updateOrCreate(
+            ['email' => 'admin@dlh.go.id'],
+            [
+                'name' => 'Admin DLH',
+                'password' => Hash::make('password'),
+                'email_verified_at' => now(),
+            ]
+        );
 
-        $admin->assignRole('admin');
-        $banksampah->assignRole('bank_sampah');
+        // Create Bank Sampah Admin
+        $banksampah = User::updateOrCreate(
+            ['email' => 'pedulilingkungan@gmail.com'],
+            [
+                'name' => 'Admin pengelola',
+                'password' => Hash::make('password'),
+                'email_verified_at' => now(),
+            ]
+        );
+
+        // Assign roles
+        $admin->syncRoles(['admin']);
+        $banksampah->syncRoles(['bank_sampah']);
     }
 }

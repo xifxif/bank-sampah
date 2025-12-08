@@ -29,7 +29,7 @@ Route::view('/artikel/teknologi-plastik', 'artikel-teknologi')->name('artikel.te
 
 /*
 |--------------------------------------------------------------------------
-| Redirect After Login - PINDAH KE ATAS SEBELUM ROUTE ADMIN/BANK SAMPAH
+| Redirect After Login
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])
@@ -39,12 +39,13 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
         if ($user->hasRole('admin')) {
             return redirect()->route('admin.dashboard');
-        } elseif ($user->hasRole('bank_sampah')) {
+        }
+        
+        if ($user->hasRole('bank_sampah')) {
             return redirect()->route('bank-sampah.dashboard');
         }
 
-        // Jika tidak punya role, logout dan redirect ke home
-        Auth::logout();
+        // Jika tidak punya role, redirect ke home dengan pesan error
         return redirect('/')->with('error', 'Anda tidak memiliki akses ke sistem.');
     })->name('dashboard');
 

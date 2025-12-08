@@ -15,9 +15,14 @@ echo "✅ Database is ready!"
 echo "📦 Running migrations..."
 php artisan migrate --force
 
-# Run seeders (TAMBAHKAN INI!)
+# Run seeders
 echo "🌱 Running seeders..."
-php artisan db:seed --force
+php artisan db:seed --class=RoleSeeder --force
+php artisan db:seed --class=AdminSeeder --force
+
+# Clear permission cache
+echo "🔑 Clearing permission cache..."
+php artisan permission:cache-reset 2>/dev/null || true
 
 # Clear all cache
 echo "🧹 Clearing cache..."
