@@ -32,14 +32,14 @@ class BankSampahController extends Controller
         }
 
         $bankSampah = $query->latest()->paginate(20);
-        $wilayah = Wilayah::active()->orderBy('nama_wilayah')->get();
+        $wilayah = Wilayah::active()->orderBy('nama_wilayah')->paginate();
 
         return view('admin.bank-sampah.index', compact('bankSampah', 'wilayah'));
     }
 
     public function create()
     {
-        $wilayah = Wilayah::active()->orderBy('nama_wilayah')->get();
+        $wilayah = Wilayah::active()->orderBy('nama_wilayah')->paginate();
 
         return view('admin.bank-sampah.create', compact('wilayah'));
     }
@@ -96,7 +96,7 @@ class BankSampahController extends Controller
 
     public function edit(BankSampah $bankSampah)
     {
-        $wilayah = Wilayah::active()->orderBy('nama_wilayah')->get();
+        $wilayah = Wilayah::active()->orderBy('nama_wilayah')->paginate();
 
         return view('admin.bank-sampah.edit', compact('bankSampah', 'wilayah'));
     }
