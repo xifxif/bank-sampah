@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Wilayah;
 
 class WilayahSeeder extends Seeder
 {
@@ -12,16 +12,14 @@ class WilayahSeeder extends Seeder
      */
     public function run(): void
     {
-        $wilayah = [
-            // Kecamatan Tasikmalaya (sample)
+        $wilayahData = [
+            // Kecamatan Tasikmalaya
             [
                 'kode_wilayah' => 'KEC-001',
                 'nama_wilayah' => 'Kawalu',
                 'jenis' => 'kecamatan',
                 'keterangan' => 'Kecamatan Kawalu, Kota Tasikmalaya',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'kode_wilayah' => 'KEC-002',
@@ -29,8 +27,6 @@ class WilayahSeeder extends Seeder
                 'jenis' => 'kecamatan',
                 'keterangan' => 'Kecamatan Cihideung, Kota Tasikmalaya',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'kode_wilayah' => 'KEC-003',
@@ -38,8 +34,6 @@ class WilayahSeeder extends Seeder
                 'jenis' => 'kecamatan',
                 'keterangan' => 'Kecamatan Cipedes, Kota Tasikmalaya',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'kode_wilayah' => 'KEC-004',
@@ -47,8 +41,6 @@ class WilayahSeeder extends Seeder
                 'jenis' => 'kecamatan',
                 'keterangan' => 'Kecamatan Tawang, Kota Tasikmalaya',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'kode_wilayah' => 'KEC-005',
@@ -56,8 +48,6 @@ class WilayahSeeder extends Seeder
                 'jenis' => 'kecamatan',
                 'keterangan' => 'Kecamatan Mangkubumi, Kota Tasikmalaya',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
 
             // Kelurahan
@@ -67,8 +57,6 @@ class WilayahSeeder extends Seeder
                 'jenis' => 'kelurahan',
                 'keterangan' => 'Kelurahan Setiawargi, Kecamatan Kawalu',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'kode_wilayah' => 'KEL-002',
@@ -76,8 +64,6 @@ class WilayahSeeder extends Seeder
                 'jenis' => 'kelurahan',
                 'keterangan' => 'Kelurahan Sukamanah, Kecamatan Cipedes',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'kode_wilayah' => 'KEL-003',
@@ -85,8 +71,6 @@ class WilayahSeeder extends Seeder
                 'jenis' => 'kelurahan',
                 'keterangan' => 'Kelurahan Kahuripan, Kecamatan Tawang',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'kode_wilayah' => 'KEL-004',
@@ -94,8 +78,6 @@ class WilayahSeeder extends Seeder
                 'jenis' => 'kelurahan',
                 'keterangan' => 'Kelurahan Parakannyasag, Kecamatan Mangkubumi',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'kode_wilayah' => 'KEL-005',
@@ -103,13 +85,16 @@ class WilayahSeeder extends Seeder
                 'jenis' => 'kelurahan',
                 'keterangan' => 'Kelurahan Cibeureum, Kecamatan Cihideung',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
         ];
 
-        DB::table('wilayah')->insert($wilayah);
+        foreach ($wilayahData as $wilayah) {
+            Wilayah::firstOrCreate(
+                ['kode_wilayah' => $wilayah['kode_wilayah']], // Cek berdasarkan kode
+                $wilayah // Data lengkap
+            );
+        }
 
-        $this->command->info('✓ ' . count($wilayah) . ' wilayah berhasil dibuat!');
+        $this->command->info('✓ ' . count($wilayahData) . ' wilayah berhasil dibuat!');
     }
 }

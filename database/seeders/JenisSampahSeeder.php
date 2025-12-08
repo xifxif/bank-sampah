@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\JenisSampah;
 
 class JenisSampahSeeder extends Seeder
 {
@@ -12,7 +12,7 @@ class JenisSampahSeeder extends Seeder
      */
     public function run(): void
     {
-        $jenisSampah = [
+        $jenisSampahData = [
             // Plastik
             [
                 'kode_jenis' => 'PLT-001',
@@ -22,8 +22,6 @@ class JenisSampahSeeder extends Seeder
                 'harga_standar' => 3000,
                 'keterangan' => 'Botol plastik bekas minuman kemasan',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'kode_jenis' => 'PLT-002',
@@ -33,8 +31,6 @@ class JenisSampahSeeder extends Seeder
                 'harga_standar' => 2500,
                 'keterangan' => 'Plastik keras seperti ember dan gelas plastik',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'kode_jenis' => 'PLT-003',
@@ -44,8 +40,6 @@ class JenisSampahSeeder extends Seeder
                 'harga_standar' => 1500,
                 'keterangan' => 'Plastik kresek dan kantong belanja',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'kode_jenis' => 'PLT-004',
@@ -55,8 +49,6 @@ class JenisSampahSeeder extends Seeder
                 'harga_standar' => 1000,
                 'keterangan' => 'Plastik berbagai jenis (campur)',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
 
             // Kertas & Kardus
@@ -68,8 +60,6 @@ class JenisSampahSeeder extends Seeder
                 'harga_standar' => 1800,
                 'keterangan' => 'Kardus bekas kemasan berwarna cokelat',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'kode_jenis' => 'KRT-002',
@@ -79,8 +69,6 @@ class JenisSampahSeeder extends Seeder
                 'harga_standar' => 2000,
                 'keterangan' => 'Kardus putih atau duplex bekas kemasan',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'kode_jenis' => 'KRT-003',
@@ -90,8 +78,6 @@ class JenisSampahSeeder extends Seeder
                 'harga_standar' => 2500,
                 'keterangan' => 'Kertas HVS bekas, buku tulis, fotokopian',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'kode_jenis' => 'KRT-004',
@@ -101,8 +87,6 @@ class JenisSampahSeeder extends Seeder
                 'harga_standar' => 1500,
                 'keterangan' => 'Koran bekas',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'kode_jenis' => 'KRT-005',
@@ -112,8 +96,6 @@ class JenisSampahSeeder extends Seeder
                 'harga_standar' => 1000,
                 'keterangan' => 'Kertas berbagai jenis (campur)',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
 
             // Logam
@@ -125,8 +107,6 @@ class JenisSampahSeeder extends Seeder
                 'harga_standar' => 2000,
                 'keterangan' => 'Kaleng bekas dan besi tua',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'kode_jenis' => 'LGM-002',
@@ -136,8 +116,6 @@ class JenisSampahSeeder extends Seeder
                 'harga_standar' => 7000,
                 'keterangan' => 'Aluminium bekas (kaleng softdrink, dll)',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'kode_jenis' => 'LGM-003',
@@ -147,8 +125,6 @@ class JenisSampahSeeder extends Seeder
                 'harga_standar' => 45000,
                 'keterangan' => 'Tembaga bekas kabel atau peralatan',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
 
             // Kaca
@@ -160,8 +136,6 @@ class JenisSampahSeeder extends Seeder
                 'harga_standar' => 500,
                 'keterangan' => 'Botol kaca bening bekas kemasan',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'kode_jenis' => 'KCA-002',
@@ -171,8 +145,6 @@ class JenisSampahSeeder extends Seeder
                 'harga_standar' => 400,
                 'keterangan' => 'Botol kaca berwarna bekas kemasan',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
 
             // Elektronik
@@ -184,8 +156,6 @@ class JenisSampahSeeder extends Seeder
                 'harga_standar' => 5000,
                 'keterangan' => 'Peralatan elektronik bekas (harga per unit)',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
 
             // Organik
@@ -197,19 +167,16 @@ class JenisSampahSeeder extends Seeder
                 'harga_standar' => 500,
                 'keterangan' => 'Sampah organik untuk kompos',
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
         ];
 
-         foreach ($jenisSampah as &$item) {
-            if (!isset($item['nama'])) {
-                $item['nama'] = $item['nama_jenis'];
-            }
+        foreach ($jenisSampahData as $jenis) {
+            JenisSampah::firstOrCreate(
+                ['kode_jenis' => $jenis['kode_jenis']],
+                $jenis
+            );
         }
-        
-        DB::table('jenis_sampah')->insert($jenisSampah);
 
-        $this->command->info('✓ ' . count($jenisSampah) . ' jenis sampah berhasil dibuat!');
+        $this->command->info('✓ ' . count($jenisSampahData) . ' jenis sampah berhasil dibuat!');
     }
 }
