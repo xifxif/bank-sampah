@@ -16,14 +16,15 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        // Force HTTPS di production
+        // Force HTTPS hanya di production
         if ($this->app->environment('production')) {
             URL::forceScheme('https');
         }
 
-        // View Composer untuk dropdown Wilayah di semua halaman admin.bank-sampah.*
-        View::composer('admin.bank-sampah.*', function ($view) {
-            $view->with('wilayah', Wilayah::active()->get());
+        // View Composer untuk semua halaman admin dan bank-sampah
+        View::composer(['admin.*', 'bank-sampah.*'], function ($view) {
+            $wilayah = Wilayah::active()->get();
+            $view->with('wilayah', $wilayah);
         });
     }
 }
