@@ -92,7 +92,9 @@
 
                     <!-- Pagination -->
                     <div class="mt-4">
-                        {{ $wilayah->links() }}
+                        @if(method_exists($wilayah, 'links'))
+                            {{ $wilayah->links() }}
+                        @endif
                     </div>
                 </div>
             </div>
