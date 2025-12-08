@@ -170,3 +170,11 @@ Route::get('/seed-production', function() {
     }
     return 'Unauthorized atau bukan production';
 })->name('seed.production');
+
+Route::get('/clear-all', function() {
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    return 'Cache cleared!';
+});
