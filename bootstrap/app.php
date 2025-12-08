@@ -28,6 +28,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         ]);
+
+        // Tambahkan middleware untuk auto-assign bank_sampah_id
+        $middleware->appendToGroup('web', [
+            \App\Http\Middleware\EnsureBankSampahId::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
