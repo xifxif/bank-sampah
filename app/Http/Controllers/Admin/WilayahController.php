@@ -12,25 +12,20 @@ class WilayahController extends Controller
 {
     public function index(Request $request)
     {
-        // Ambil semua data termasuk nonaktif + hitung jumlah bank sampah
-        $query = Wilayah::withoutGlobalScopes()
-            ->withCount('bankSampah');
+        $query = Wilayah::withCount('bankSampah');
 
-        // Filter jenis wilayah
         if ($request->filled('jenis')) {
-            $query->where('jenis', $request->jenis);
+            $query->where('jenis', $request->jenis); // Ganti jenis() jadi where biasa
         }
 
-        // Pencarian
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('nama_wilayah', 'like', '%' . $request->search . '%')
-                  ->orWhere('kode_wilayah', 'like', '%' . $request->search . '%');
+                    ->orWhere('kode_wilayah', 'like', '%' . $request->search . '%');
             });
         }
 
-        // Urutkan & paginasi
-        $wilayah = $query->orderBy('created_at', 'desc')->paginate(20);
+        $wilayah = $query->orderBy('created_at', 'desc')->paginate(20); // Lebih explicit
 
         return view('admin.wilayah.index', compact('wilayah'));
     }
@@ -69,12 +64,13 @@ class WilayahController extends Controller
         return view('admin.wilayah.show', compact('wilayah'));
     }
 
-    public function edit(Wilayah $wilayah)
-    {
-        return view('admin.wilayah.edit', [
-            'itemWilayah' => $wilayah
-        ]);
-    }
+   public function edit(Wilayah $wilayah)
+{
+    return view('admin.wilayah.edit', [
+        'itemWilayah' => $wilayah
+    ]);
+}
+
 
     public function update(Request $request, Wilayah $wilayah)
     {
@@ -103,6 +99,7 @@ class WilayahController extends Controller
 
     public function destroy(Wilayah $wilayah)
     {
+        // Check if wilayah has bank sampah
         if ($wilayah->bankSampah()->count() > 0) {
             return redirect()->route('admin.wilayah.index')
                 ->with('error', 'Wilayah tidak dapat dihapus karena masih memiliki Bank Sampah.');
