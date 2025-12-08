@@ -15,9 +15,9 @@ echo "✅ Database is ready!"
 echo "📦 Running migrations..."
 php artisan migrate --force
 
-# Seed default admin users
-echo "👤 Seeding admin users..."
-php artisan db:seed --class=AdminSeeder
+# Run seeders (TAMBAHKAN INI!)
+echo "🌱 Running seeders..."
+php artisan db:seed --force
 
 # Clear all cache
 echo "🧹 Clearing cache..."
@@ -32,7 +32,7 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Set proper permissions (PENTING untuk session file!)
+# Set proper permissions
 echo "🔐 Setting permissions..."
 chown -R www-data:www-data /var/www/html/storage
 chown -R www-data:www-data /var/www/html/bootstrap/cache

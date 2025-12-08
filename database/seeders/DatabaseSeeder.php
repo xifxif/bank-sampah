@@ -12,12 +12,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            RoleSeeder::class,
-            WilayahSeeder::class,
-            BankSampahSeeder::class,
-            JenisSampahSeeder::class,
-            AdminSeeder::class,
-            BankSampahUserSeeder::class,
+            RolePermissionSeeder::class, // Jalankan dulu role/permission
+            AdminSeeder::class,          // Baru admin
+            // tambahkan seeder lain kalau ada
         ]);
     }
 }
