@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
             JenisSampahSeeder::class,
             BankSampahSeeder::class,
             AdminSeeder::class,
+            BankSampahUserSeeder::class,
         ]);
     }
 }

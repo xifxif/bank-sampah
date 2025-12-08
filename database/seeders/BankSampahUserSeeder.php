@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\BankSampah;
 use Illuminate\Support\Facades\Hash;
 
 class BankSampahUserSeeder extends Seeder
@@ -13,6 +14,14 @@ class BankSampahUserSeeder extends Seeder
      */
     public function run(): void
     {
+        // Cek apakah bank sampah sudah ada
+        $totalBank = BankSampah::count();
+
+        if ($totalBank < 1) {
+            $this->command->error('❌ Tidak ada data bank sampah! Jalankan BankSampahSeeder dulu.');
+            return;
+        }
+
         $users = [
             [
                 'name' => 'Operator Berkah Lestari',
@@ -72,26 +81,34 @@ class BankSampahUserSeeder extends Seeder
             ],
         ];
 
-        foreach ($users as $userData) {
-            $user = User::create($userData);
+        foreach ($users as $data) {
+
+            // Cek apakah bank_sampah_id valid
+            if (!BankSampah::find($data['bank_sampah_id'])) {
+                $this->command->warn("⚠ Bank sampah ID {$data['bank_sampah_id']} tidak ditemukan — user {$data['email']} dilewati.");
+                continue;
+            }
+
+            $user = User::create($data);
             $user->assignRole('bank_sampah');
 
-            $this->command->info('✓ User created: ' . $userData['email']);
+            $this->command->info('✓ User created: ' . $data['email']);
         }
 
+        // Output login info
         $this->command->info('');
         $this->command->info('========================================');
-        $this->command->info('BANK SAMPAH USERS - LOGIN CREDENTIALS');
+        $this->command->info('BANK SAMPAH USER LOGIN CREDENTIALS');
         $this->command->info('========================================');
         $this->command->info('');
 
-        foreach ($users as $userData) {
-            $this->command->info('Email: ' . $userData['email']);
+        foreach ($users as $data) {
+            $this->command->info('Email: ' . $data['email']);
             $this->command->info('Password: password123');
             $this->command->info('----------------------------------------');
         }
 
         $this->command->info('');
-        $this->command->info('Total: ' . count($users) . ' operator bank sampah berhasil dibuat!');
+        $this->command->info('Total seed selesai!');
     }
 }

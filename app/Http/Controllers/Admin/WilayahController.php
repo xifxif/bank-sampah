@@ -25,7 +25,7 @@ class WilayahController extends Controller
             });
         }
 
-        $wilayah = $query->latest()->paginate(20);
+        $wilayah = $query->latest()->paginate(20); // ← UBAH pagination jadi paginate
 
         return view('admin.wilayah.index', compact('wilayah'));
     }
