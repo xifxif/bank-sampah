@@ -21,8 +21,7 @@
                                 <label for="kode_bank" class="block mb-2 text-sm font-medium text-gray-700">
                                     Kode Bank <span class="text-red-500">*</span>
                                 </label>
-                                <input type="text" name="kode_bank" id="kode_bank" 
-                                       value="{{ old('kode_bank', $bankSampah->kode_bank) }}" required
+                                <input type="text" name="kode_bank" id="kode_bank" value="{{ old('kode_bank', $bankSampah->kode_bank) }}" required
                                     class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('kode_bank') border-red-500 @enderror">
                                 @error('kode_bank')
                                     <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
@@ -34,8 +33,7 @@
                                 <label for="nama_bank" class="block mb-2 text-sm font-medium text-gray-700">
                                     Nama Bank <span class="text-red-500">*</span>
                                 </label>
-                                <input type="text" name="nama_bank" id="nama_bank" 
-                                       value="{{ old('nama_bank', $bankSampah->nama_bank) }}" required
+                                <input type="text" name="nama_bank" id="nama_bank" value="{{ old('nama_bank', $bankSampah->nama_bank) }}" required
                                     class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('nama_bank') border-red-500 @enderror">
                                 @error('nama_bank')
                                     <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
@@ -51,8 +49,7 @@
                                     class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('wilayah_id') border-red-500 @enderror">
                                     <option value="">Pilih Wilayah</option>
                                     @foreach($wilayah as $w)
-                                        <option value="{{ $w->id }}" 
-                                                {{ old('wilayah_id', $bankSampah->wilayah_id) == $w->id ? 'selected' : '' }}>
+                                        <option value="{{ $w->id }}" {{ old('wilayah_id', $bankSampah->wilayah_id) == $w->id ? 'selected' : '' }}>
                                             {{ $w->nama_wilayah }} ({{ ucfirst($w->jenis) }})
                                         </option>
                                     @endforeach
@@ -67,8 +64,7 @@
                                 <label for="nama_pengelola" class="block mb-2 text-sm font-medium text-gray-700">
                                     Nama Pengelola <span class="text-red-500">*</span>
                                 </label>
-                                <input type="text" name="nama_pengelola" id="nama_pengelola" 
-                                       value="{{ old('nama_pengelola', $bankSampah->nama_pengelola) }}" required
+                                <input type="text" name="nama_pengelola" id="nama_pengelola" value="{{ old('nama_pengelola', $bankSampah->nama_pengelola) }}" required
                                     class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('nama_pengelola') border-red-500 @enderror">
                                 @error('nama_pengelola')
                                     <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
@@ -80,8 +76,7 @@
                                 <label for="no_telepon" class="block mb-2 text-sm font-medium text-gray-700">
                                     No. Telepon
                                 </label>
-                                <input type="text" name="no_telepon" id="no_telepon" 
-                                       value="{{ old('no_telepon', $bankSampah->no_telepon) }}"
+                                <input type="text" name="no_telepon" id="no_telepon" value="{{ old('no_telepon', $bankSampah->no_telepon) }}"
                                     class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                             </div>
 
@@ -90,8 +85,7 @@
                                 <label for="email" class="block mb-2 text-sm font-medium text-gray-700">
                                     Email
                                 </label>
-                                <input type="email" name="email" id="email" 
-                                       value="{{ old('email', $bankSampah->email) }}"
+                                <input type="email" name="email" id="email" value="{{ old('email', $bankSampah->email) }}"
                                     class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                             </div>
 
@@ -100,8 +94,7 @@
                                 <label for="tanggal_berdiri" class="block mb-2 text-sm font-medium text-gray-700">
                                     Tanggal Berdiri
                                 </label>
-                                <input type="date" name="tanggal_berdiri" id="tanggal_berdiri" 
-                                       value="{{ old('tanggal_berdiri', $bankSampah->tanggal_berdiri ? \Carbon\Carbon::parse($bankSampah->tanggal_berdiri)->format('Y-m-d') : '') }}"
+                                <input type="date" name="tanggal_berdiri" id="tanggal_berdiri" value="{{ old('tanggal_berdiri', $bankSampah->tanggal_berdiri) }}"
                                     class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                             </div>
 
@@ -146,7 +139,7 @@
                                 Batal
                             </a>
                             <button type="submit" class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-                                Update
+                                Simpan
                             </button>
                         </div>
                     </form>
