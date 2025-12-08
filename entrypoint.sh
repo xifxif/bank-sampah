@@ -1,14 +1,33 @@
-#!/bin/sh
-set -e
+#!/bin/bash
 
-echo "Menunggu database MySQL siap..."
-while ! mysqladmin ping -h"$DB_HOST" -u"$DB_USERNAME" -p"$DB_PASSWORD" --silent; do
+echo "🚀 Starting deployment process..."
+
+# Wait for database to be ready
+echo "⏳ Waiting for database connection..."
+until php artisan migrate:status 2>/dev/null; do
+    echo "Database not ready yet, waiting 2 seconds..."
     sleep 2
 done
 
-echo "Database siap, jalankan migrate + optimize"
-php artisan migrate --force
-php artisan optimize
+echo "✅ Database is ready!"
 
-echo "Menjalankan Laravel server..."
-exec php artisan serve --host=0.0.0.0 --port=8080
+# Run migrations
+echo "📦 Running migrations..."
+php artisan migrate --force
+
+# Cache optimization for production
+echo "⚡ Optimizing Laravel..."
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# Set proper permissions
+echo "🔐 Setting permissions..."
+chown -R www-data:www-data /var/www/html/storage
+chown -R www-data:www-data /var/www/html/bootstrap/cache
+chmod -R 775 /var/www/html/storage
+chmod -R 775 /var/www/html/bootstrap/cache
+
+# Start PHP server
+echo "🎉 Starting server on port 8080..."
+php artisan serve --host=0.0.0.0 --port=8080
