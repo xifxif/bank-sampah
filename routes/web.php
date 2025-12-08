@@ -17,19 +17,18 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\BankSampah\LaporanController as BankSampahLaporanController;
 use App\Http\Controllers\BankSampah\DashboardController as BankSampahDashboardController;
 
-Route::get('/fix-duplicate-transaksi', function () {
-    // Hapus transaksi duplikat yang gagal disimpan
-    DB::table('transaksi_penyetoran')
-        ->where('no_transaksi', 'PST-20251208-0001')
-        ->whereNull('nama_penyetor') // Transaksi yang gagal biasanya punya data kosong
-        ->delete();
+use App\Models\User;
+
+Route::get('/fix-admin-pengelola', function () {
+    $user = User::where('email', 'pedulilingkungan@gmail.com')->first();
     
-    DB::table('transaksi_penjualan')
-        ->where('no_transaksi', 'LIKE', 'PJL-20251208-%')
-        ->whereNull('pembeli')
-        ->delete();
+    if ($user) {
+        $user->bank_sampah_id = 1;
+        $user->save();
+        return 'User bank_sampah_id berhasil diupdate! Sekarang hapus route ini.';
+    }
     
-    return 'Transaksi duplikat berhasil dibersihkan. Coba tambah penyetoran/penjualan lagi.';
+    return 'User tidak ditemukan';
 })->middleware('auth');
 
 /*
