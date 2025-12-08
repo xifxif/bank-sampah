@@ -15,7 +15,7 @@ class WilayahController extends Controller
         $query = Wilayah::withCount('bankSampah');
 
         if ($request->filled('jenis')) {
-            $query->jenis($request->jenis);
+            $query->where('jenis', $request->jenis); // Ganti jenis() jadi where biasa
         }
 
         if ($request->filled('search')) {
@@ -25,7 +25,7 @@ class WilayahController extends Controller
             });
         }
 
-        $wilayah = $query->latest()->paginate(20); // ← UBAH pagination jadi paginate
+        $wilayah = $query->orderBy('created_at', 'desc')->paginate(20); // Lebih explicit
 
         return view('admin.wilayah.index', compact('wilayah'));
     }
