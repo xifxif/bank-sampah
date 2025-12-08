@@ -27,8 +27,9 @@ RUN rm -rf storage/framework/views/* \
     && rm -rf public/build
 
 # NPM install + Vite build
-RUN npm ci --only=production
+RUN npm ci  # ✅ Install semua dependencies termasuk devDependencies (Vite)
 RUN npm run build
+RUN rm -rf node_modules  # ✅ Hapus node_modules setelah build untuk hemat space
 
 # Verify build folder exists
 RUN ls -la public/build && cat public/build/manifest.json || echo "❌ Build failed!"
