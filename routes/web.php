@@ -26,6 +26,28 @@ use App\Http\Controllers\BankSampah\DashboardController as BankSampahDashboardCo
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 Route::view('/artikel/memilah-sampah', 'artikel-memilah-sampah')->name('artikel.memilah');
 Route::view('/artikel/teknologi-plastik', 'artikel-teknologi')->name('artikel.teknologi');
+
+/*
+|--------------------------------------------------------------------------
+| Redirect After Login - PINDAH KE ATAS SEBELUM ROUTE ADMIN/BANK SAMPAH
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])
+    ->get('/dashboard', function () {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        if ($user->hasRole('admin')) {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->hasRole('bank_sampah')) {
+            return redirect()->route('bank-sampah.dashboard');
+        }
+
+        // Jika tidak punya role, logout dan redirect ke home
+        Auth::logout();
+        return redirect('/')->with('error', 'Anda tidak memiliki akses ke sistem.');
+    })->name('dashboard');
+
 /*
 |--------------------------------------------------------------------------
 | Admin Routes
@@ -117,26 +139,3 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
             Route::get('/jenis-sampah', [BankSampahLaporanController::class, 'jenisSampah'])->name('jenis-sampah');
         });
     });
-
-/*
-|--------------------------------------------------------------------------
-| Redirect After Login
-|--------------------------------------------------------------------------
-*/
-Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])
-    ->get('/dashboard', function () {
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
-
-        if ($user->hasRole('admin')) {
-            return redirect()->route('admin.dashboard');
-        } elseif ($user->hasRole('bank_sampah')) {
-            return redirect()->route('bank-sampah.dashboard');
-        }
-
-        return redirect('/');
-    })->name('dashboard');
-
-// use Illuminate\Support\Facades\Artisan;
-// use Illuminate\Support\Facades\Schema;
-// use Illuminate\Support\Facades\DB;
