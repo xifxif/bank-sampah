@@ -64,10 +64,13 @@ class WilayahController extends Controller
         return view('admin.wilayah.show', compact('wilayah'));
     }
 
-    public function edit(Wilayah $wilayah)
-    {
-        return view('admin.wilayah.edit', compact('wilayah'));
-    }
+   public function edit(Wilayah $wilayah)
+{
+    return view('admin.wilayah.edit', [
+        'itemWilayah' => $wilayah
+    ]);
+}
+
 
     public function update(Request $request, Wilayah $wilayah)
     {
