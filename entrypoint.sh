@@ -11,6 +11,10 @@ done
 
 echo "✅ Database is ready!"
 
+# Create session table if not exists
+echo "📦 Creating session table..."
+php artisan session:table --force 2>/dev/null || true
+
 # Run migrations
 echo "📦 Running migrations..."
 php artisan migrate --force
