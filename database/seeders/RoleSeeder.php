@@ -16,9 +16,9 @@ class RoleSeeder extends Seeder
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Create Roles
-        $adminRole = Role::create(['name' => 'admin']);
-        $bankSampahRole = Role::create(['name' => 'bank_sampah']);
+        // Create Roles (gunakan firstOrCreate agar tidak error jika sudah ada)
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+        $bankSampahRole = Role::firstOrCreate(['name' => 'bank_sampah']);
 
         // Create Permissions
         $permissions = [
@@ -84,14 +84,13 @@ class RoleSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::firstOrCreate(['name' => $permission]);
         }
 
-        // Assign Permissions to Admin (Full Access)
-        $adminRole->givePermissionTo(Permission::all());
+        // Sync permissions (tidak duplikat kalau re-run)
+        $adminRole->syncPermissions(Permission::all());
 
-        // Assign Permissions to Bank Sampah (Limited Access)
-        $bankSampahRole->givePermissionTo([
+        $bankSampahRole->syncPermissions([
             'bank-sampah.view',
             'jenis-sampah.view',
             'harga-bank.view',
