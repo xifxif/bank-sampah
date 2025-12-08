@@ -16,7 +16,6 @@ use App\Http\Controllers\Admin\LaporanController as AdminLaporanController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\BankSampah\LaporanController as BankSampahLaporanController;
 use App\Http\Controllers\BankSampah\DashboardController as BankSampahDashboardController;
-use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
