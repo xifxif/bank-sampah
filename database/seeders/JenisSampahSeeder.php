@@ -202,6 +202,12 @@ class JenisSampahSeeder extends Seeder
             ],
         ];
 
+         foreach ($jenisSampah as &$item) {
+            if (!isset($item['nama'])) {
+                $item['nama'] = $item['nama_jenis'];
+            }
+        }
+        
         DB::table('jenis_sampah')->insert($jenisSampah);
 
         $this->command->info('✓ ' . count($jenisSampah) . ' jenis sampah berhasil dibuat!');

@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Models\BankSampah;
 use App\Models\Wilayah;
 
 class BankSampahSeeder extends Seeder
@@ -14,9 +13,16 @@ class BankSampahSeeder extends Seeder
      */
     public function run(): void
     {
+        // Ambil ID wilayah dari tabel 'wilayah'
+        $setiawargi = Wilayah::where('nama_wilayah', 'Setiawargi')->first()->id;
+        $sukamanah = Wilayah::where('nama_wilayah', 'Sukamanah')->first()->id;
+        $kahuripan = Wilayah::where('nama_wilayah', 'Kahuripan')->first()->id;
+        $parakannyasag = Wilayah::where('nama_wilayah', 'Parakannyasag')->first()->id;
+        $cibeureum = Wilayah::where('nama_wilayah', 'Cibeureum')->first()->id;
+
         $bankSampah = [
             [
-                'wilayah_id' => 6, // Setiawargi
+                'wilayah_id' => $setiawargi,
                 'kode_bank' => 'BS-001',
                 'nama_bank' => 'Bank Sampah Berkah Lestari',
                 'alamat' => 'Jl. Setiawargi No. 45, Kawalu, Tasikmalaya',
@@ -30,7 +36,7 @@ class BankSampahSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'wilayah_id' => 7, // Sukamanah
+                'wilayah_id' => $sukamanah,
                 'kode_bank' => 'BS-002',
                 'nama_bank' => 'Bank Sampah Hijau Mandiri',
                 'alamat' => 'Jl. Sukamanah Raya No. 12, Cipedes, Tasikmalaya',
@@ -44,7 +50,7 @@ class BankSampahSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'wilayah_id' => 8, // Kahuripan
+                'wilayah_id' => $kahuripan,
                 'kode_bank' => 'BS-003',
                 'nama_bank' => 'Bank Sampah Sejahtera Bersama',
                 'alamat' => 'Jl. Kahuripan Indah No. 78, Tawang, Tasikmalaya',
@@ -58,7 +64,7 @@ class BankSampahSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'wilayah_id' => 9, // Parakannyasag
+                'wilayah_id' => $parakannyasag,
                 'kode_bank' => 'BS-004',
                 'nama_bank' => 'Bank Sampah Bumi Asri',
                 'alamat' => 'Jl. Parakannyasag No. 25, Mangkubumi, Tasikmalaya',
@@ -72,7 +78,7 @@ class BankSampahSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'wilayah_id' => 10, // Cibeureum
+                'wilayah_id' => $cibeureum,
                 'kode_bank' => 'BS-005',
                 'nama_bank' => 'Bank Sampah Cibeureum Bersih',
                 'alamat' => 'Jl. Cibeureum Utara No. 56, Cihideung, Tasikmalaya',
@@ -86,7 +92,7 @@ class BankSampahSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'wilayah_id' => 6, // Setiawargi
+                'wilayah_id' => $setiawargi,
                 'kode_bank' => 'BS-006',
                 'nama_bank' => 'Bank Sampah Maju Bersama',
                 'alamat' => 'Jl. Raya Kawalu No. 88, Kawalu, Tasikmalaya',
@@ -100,7 +106,7 @@ class BankSampahSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'wilayah_id' => 7, // Sukamanah
+                'wilayah_id' => $sukamanah,
                 'kode_bank' => 'BS-007',
                 'nama_bank' => 'Bank Sampah Peduli Lingkungan',
                 'alamat' => 'Jl. Cipedes Selatan No. 33, Cipedes, Tasikmalaya',
@@ -114,7 +120,7 @@ class BankSampahSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'wilayah_id' => 8, // Kahuripan
+                'wilayah_id' => $kahuripan,
                 'kode_bank' => 'BS-008',
                 'nama_bank' => 'Bank Sampah Harapan Kita',
                 'alamat' => 'Jl. Tawang Raya No. 101, Tawang, Tasikmalaya',
