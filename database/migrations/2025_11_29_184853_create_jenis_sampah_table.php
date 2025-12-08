@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('jenis_sampah', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
+            $table->string('nama')->nullable();;
             $table->string('kode_jenis', 20)->unique();
             $table->string('nama_jenis', 100);
             $table->enum('kategori', ['organik', 'anorganik', 'b3'])->default('anorganik');

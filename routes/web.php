@@ -140,3 +140,19 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
             Route::get('/jenis-sampah', [BankSampahLaporanController::class, 'jenisSampah'])->name('jenis-sampah');
         });
     });
+
+Route::get('/seed-production', function() {
+    if (app()->environment('production') && auth()->check()) {
+        try {
+            // Cek apakah sudah ada data
+            if (\App\Models\Wilayah::count() == 0) {
+                \Artisan::call('db:seed', ['--force' => true]);
+                return 'Seeder berhasil dijalankan! Data sudah masuk.';
+            }
+            return 'Data sudah ada, tidak perlu seed lagi.';
+        } catch (\Exception $e) {
+            return 'Error: ' . $e->getMessage();
+        }
+    }
+    return 'Unauthorized atau bukan production';
+})->name('seed.production');
