@@ -64,11 +64,15 @@ class TransaksiPenyetoran extends Model
         $prefix = 'PST';
         $date = date('Ymd');
 
-        $lastTransaction = self::whereDate('created_at', today())
-            ->latest('id')
+        // Pakai withTrashed() karena soft delete, dan tambah lockForUpdate()
+        $lastTransaction = self::withTrashed()
+            ->whereDate('created_at', today())
+            ->orderBy('id', 'desc')
+            ->lockForUpdate()
             ->first();
 
         if ($lastTransaction) {
+            // Ambil 4 digit terakhir dari nomor transaksi
             $lastNumber = intval(substr($lastTransaction->no_transaksi, -4));
             $newNumber = $lastNumber + 1;
         } else {
