@@ -11,13 +11,16 @@ done
 
 echo "✅ Database is ready!"
 
-# Create session table if not exists
-echo "📦 Creating session table..."
-php artisan session:table --force 2>/dev/null || true
-
 # Run migrations
 echo "📦 Running migrations..."
 php artisan migrate --force
+
+# Clear all cache
+echo "🧹 Clearing cache..."
+php artisan config:clear
+php artisan cache:clear
+php artisan view:clear
+php artisan route:clear
 
 # Cache optimization for production
 echo "⚡ Optimizing Laravel..."
@@ -25,7 +28,7 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Set proper permissions
+# Set proper permissions (PENTING untuk session file!)
 echo "🔐 Setting permissions..."
 chown -R www-data:www-data /var/www/html/storage
 chown -R www-data:www-data /var/www/html/bootstrap/cache
