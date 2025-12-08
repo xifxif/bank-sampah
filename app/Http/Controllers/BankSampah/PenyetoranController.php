@@ -60,9 +60,10 @@ class PenyetoranController extends Controller
             'keterangan' => ['nullable', 'string'],
         ]);
         
-        // Generate nomor transaksi
+        // Generate nomor transaksi (termasuk yang sudah dihapus)
         $tanggal = date('Ymd', strtotime($validated['tanggal_setor']));
-        $lastTransaction = TransaksiPenyetoran::whereDate('created_at', date('Y-m-d'))
+        $lastTransaction = TransaksiPenyetoran::withTrashed()
+            ->whereDate('created_at', date('Y-m-d'))
             ->orderBy('id', 'desc')
             ->lockForUpdate()
             ->first();
