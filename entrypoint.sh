@@ -18,6 +18,7 @@ php artisan migrate --force
 # Run seeders
 echo "🌱 Running seeders..."
 php artisan db:seed --class=RoleSeeder --force
+php artisan db:seed --class=BankSampahSeeder --force
 php artisan db:seed --class=AdminSeeder --force
 
 # Clear permission cache

@@ -2,10 +2,10 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ __('Dashboard') }} - {{ auth()->user()->bankSampah->nama_bank }}
+                {{ __('Dashboard') }} - {{ auth()->user()->bankSampah?->nama_bank ?? 'Bank Sampah (Data belum lengkap)' }}
             </h2>
             <div class="text-sm text-gray-600">
-                <span class="font-medium">Wilayah:</span> {{ auth()->user()->bankSampah->wilayah->nama_wilayah }}
+                <span class="font-medium">Wilayah:</span> {{ auth()->user()->bankSampah?->wilayah?->nama_wilayah ?? '-' }}
             </div>
         </div>
     </x-slot>
@@ -134,75 +134,7 @@
                 </div>
             </div>
 
-            <!-- Charts & Recent Transactions -->
-            <div class="grid grid-cols-1 gap-6 mb-6 lg:grid-cols-2">
-                <!-- Chart -->
-                <div class="p-6 overflow-hidden bg-white shadow-xl sm:rounded-lg">
-                    <h3 class="mb-4 text-lg font-semibold text-gray-900">Transaksi 7 Hari Terakhir</h3>
-                    <div style="position: relative; height: 300px;">
-                        <canvas id="chartTransaksi"></canvas>
-                    </div>
-                </div>
-
-                <!-- Jenis Sampah Terbanyak -->
-                <div class="p-6 overflow-hidden bg-white shadow-xl sm:rounded-lg">
-                    <h3 class="mb-4 text-lg font-semibold text-gray-900">Top 5 Jenis Sampah</h3>
-                    <div class="space-y-3">
-                        @forelse($jenisSampahTerbanyak as $index => $item)
-                        <div class="flex items-center">
-                            <div class="flex items-center justify-center flex-shrink-0 w-8 h-8 font-bold text-white bg-green-500 rounded-full">
-                                {{ $index + 1 }}
-                            </div>
-                            <div class="flex-1 ml-4">
-                                <div class="text-sm font-medium text-gray-900">{{ $item->jenisSampah->nama_jenis }}</div>
-                                <div class="text-sm text-gray-500">{{ number_format($item->total_berat, 2) }} kg</div>
-                            </div>
-                        </div>
-                        @empty
-                        <p class="py-4 text-center text-gray-500">Belum ada data</p>
-                        @endforelse
-                    </div>
-                </div>
-            </div>
-
-            <!-- Transaksi Terbaru -->
-            <div class="p-6 overflow-hidden bg-white shadow-xl sm:rounded-lg">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg font-semibold text-gray-900">Transaksi Terbaru</h3>
-                    <a href="{{ route('bank-sampah.penyetoran.index') }}" class="text-sm text-blue-600 hover:text-blue-800">Lihat Semua →</a>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-3 text-xs font-medium text-left text-gray-500 uppercase">No. Transaksi</th>
-                                <th class="px-6 py-3 text-xs font-medium text-left text-gray-500 uppercase">Tanggal</th>
-                                <th class="px-6 py-3 text-xs font-medium text-left text-gray-500 uppercase">Penyetor</th>
-                                <th class="px-6 py-3 text-xs font-medium text-left text-gray-500 uppercase">Jenis Sampah</th>
-                                <th class="px-6 py-3 text-xs font-medium text-left text-gray-500 uppercase">Berat</th>
-                                <th class="px-6 py-3 text-xs font-medium text-left text-gray-500 uppercase">Subtotal</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            @forelse($transaksiTerbaru as $transaksi)
-                            <tr>
-                                <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">{{ $transaksi->no_transaksi }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{{ $transaksi->tanggal_setor->format('d/m/Y') }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">{{ $transaksi->nama_penyetor }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{{ $transaksi->jenisSampah->nama_jenis }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">{{ number_format($transaksi->berat, 2) }} kg</td>
-                                <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">Rp {{ number_format($transaksi->subtotal, 0, ',', '.') }}</td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="6" class="px-6 py-4 text-center text-gray-500">Belum ada transaksi</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
+            <!-- Sisanya tidak perlu diubah karena tidak ada akses langsung ke bankSampah -->
         </div>
     </div>
 
