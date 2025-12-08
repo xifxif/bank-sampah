@@ -11,9 +11,19 @@ done
 
 echo "✅ Database is ready!"
 
-# Jalankan migrate:fresh --seed (karena database masih kosong)
+# Jalankan migrate:fresh --seed
 echo "📦 Running migrate:fresh --seed..."
 php artisan migrate:fresh --seed --force
+
+# Cek apakah admin user berhasil dibuat
+echo "🔍 Checking admin user..."
+USER_COUNT=$(php artisan tinker --execute="echo App\Models\User::count();" 2>/dev/null || echo "0")
+echo "Total users in database: $USER_COUNT"
+
+if [ "$USER_COUNT" = "0" ]; then
+    echo "❌ No users found! Running AdminSeeder again..."
+    php artisan db:seed --class=AdminSeeder --force
+fi
 
 # Clear permission cache
 echo "🔑 Clearing permission cache..."
@@ -38,6 +48,15 @@ chown -R www-data:www-data /var/www/html/storage
 chown -R www-data:www-data /var/www/html/bootstrap/cache
 chmod -R 775 /var/www/html/storage
 chmod -R 775 /var/www/html/bootstrap/cache
+
+# Display admin credentials
+echo ""
+echo "════════════════════════════════════════"
+echo "🔐 ADMIN CREDENTIALS:"
+echo "Email: admin@dlh.go.id"
+echo "Password: password"
+echo "════════════════════════════════════════"
+echo ""
 
 # Start PHP server
 echo "🎉 Starting server on port 8080..."
