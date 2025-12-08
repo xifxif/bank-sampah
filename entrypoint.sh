@@ -15,6 +15,10 @@ echo "✅ Database is ready!"
 echo "📦 Running migrations..."
 php artisan migrate --force
 
+# Seed default admin users
+echo "👤 Seeding admin users..."
+php artisan db:seed --class=AdminSeeder
+
 # Clear all cache
 echo "🧹 Clearing cache..."
 php artisan config:clear
