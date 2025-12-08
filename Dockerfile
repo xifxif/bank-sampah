@@ -1,3 +1,4 @@
+# Base image PHP
 FROM php:8.2-fpm
 
 # Install dependencies + Node.js + PHP MySQL extension
@@ -8,23 +9,27 @@ RUN apt-get update && apt-get install -y \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
+# Set working directory
 WORKDIR /var/www/html
 
+# Copy project
 COPY . .
 
-# Composer install
+# Install Composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
     && composer install --no-interaction --optimize-autoloader
 
-# NPM install + build Vite
-RUN rm -rf public/build
+# Clear Laravel cache & remove old build
+RUN rm -rf storage/framework/views/* \
+    && rm -rf storage/framework/cache/* \
+    && rm -rf public/build
+
+# NPM install + Vite build
 RUN npm install
 RUN npm run build
 
-# Clear Laravel cache
-RUN rm -rf storage/framework/views/*
-RUN rm -rf storage/framework/cache/*
+# Clear Laravel cache again (without optimize:clear)
 RUN php artisan view:clear
 RUN php artisan config:clear
 RUN php artisan route:clear
@@ -33,6 +38,8 @@ RUN php artisan route:clear
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+# Expose port
 EXPOSE 8080
 
+# Start container with entrypoint
 ENTRYPOINT ["/entrypoint.sh"]

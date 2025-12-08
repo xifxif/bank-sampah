@@ -1,12 +1,12 @@
 #!/bin/sh
 set -e
 
-echo "Menunggu database MySQL ready..."
+echo "Menunggu database MySQL siap..."
 while ! mysqladmin ping -h"$DB_HOST" -u"$DB_USERNAME" -p"$DB_PASSWORD" --silent; do
     sleep 2
 done
 
-echo "Database siap, jalankan migrate dan optimize"
+echo "Database siap, jalankan migrate + optimize"
 php artisan migrate --force
 php artisan optimize
 
