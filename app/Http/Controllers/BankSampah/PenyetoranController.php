@@ -48,46 +48,74 @@ class PenyetoranController extends Controller
     }
 
     public function store(Request $request)
-{
-    $validated = $request->validate([
-        // validasi fields lainnya...
-    ]);
-    
-    // TAMBAHKAN INI: Pastikan bank_sampah_id terisi
-    $user = auth()->user();
-    
-    // Jika user tidak punya bank_sampah_id, ambil dari relasi atau set default
-    $bankSampahId = $user->bank_sampah_id;
-    
-    if (!$bankSampahId) {
-        // Opsi 1: Jika user punya relasi ke bank_sampah
-        if ($user->bankSampah) {
-            $bankSampahId = $user->bankSampah->id;
-        }
-        // Opsi 2: Atau ambil bank_sampah pertama yang ada
-        else {
-            $bankSampah = \App\Models\BankSampah::first();
-            if ($bankSampah) {
-                $bankSampahId = $bankSampah->id;
-                // Update user supaya next time tidak error
-                $user->bank_sampah_id = $bankSampahId;
-                $user->save();
+    {
+        // Validasi input
+        $validated = $request->validate([
+            'jenis_sampah_id' => ['required', 'exists:jenis_sampah,id'],
+            'tanggal_setor' => ['required', 'date'],
+            'nama_penyetor' => ['required', 'string', 'max:100'],
+            'no_identitas' => ['nullable', 'string', 'max:50'],
+            'berat' => ['required', 'numeric', 'min:0.01'],
+            'harga_per_satuan' => ['required', 'numeric', 'min:0'],
+            'keterangan' => ['nullable', 'string'],
+        ]);
+        
+        // Generate nomor transaksi
+        $tanggal = date('Ymd', strtotime($validated['tanggal_setor']));
+        $lastTransaction = TransaksiPenyetoran::whereDate('created_at', date('Y-m-d'))
+            ->orderBy('id', 'desc')
+            ->lockForUpdate()
+            ->first();
+        
+        $counter = $lastTransaction ? (int)substr($lastTransaction->no_transaksi, -4) + 1 : 1;
+        $noTransaksi = 'PST-' . $tanggal . '-' . str_pad($counter, 4, '0', STR_PAD_LEFT);
+
+        // Hitung subtotal
+        $subtotal = $validated['berat'] * $validated['harga_per_satuan'];
+        
+        // Pastikan bank_sampah_id terisi
+        $user = auth()->user();
+        $bankSampahId = $user->bank_sampah_id;
+        
+        if (!$bankSampahId) {
+            if ($user->bankSampah) {
+                $bankSampahId = $user->bankSampah->id;
             } else {
-                return back()->with('error', 'Bank Sampah belum terdaftar. Hubungi administrator.');
+                $bankSampah = \App\Models\BankSampah::first();
+                if ($bankSampah) {
+                    $bankSampahId = $bankSampah->id;
+                    $user->bank_sampah_id = $bankSampahId;
+                    $user->save();
+                } else {
+                    return back()->with('error', 'Bank Sampah belum terdaftar. Hubungi administrator.');
+                }
             }
         }
+        
+        // Simpan transaksi
+        $transaksi = TransaksiPenyetoran::create([
+            'bank_sampah_id' => $bankSampahId,
+            'user_id' => $user->id,
+            'jenis_sampah_id' => $validated['jenis_sampah_id'],
+            'tanggal_setor' => $validated['tanggal_setor'],
+            'nama_penyetor' => $validated['nama_penyetor'],
+            'no_identitas' => $validated['no_identitas'],
+            'berat' => $validated['berat'],
+            'harga_per_satuan' => $validated['harga_per_satuan'],
+            'keterangan' => $validated['keterangan'],
+            'no_transaksi' => $noTransaksi,
+            'subtotal' => $subtotal,
+        ]);
+
+        LogAktivitas::logCreate(
+            'transaksi_penyetoran',
+            'Transaksi penyetoran baru: ' . $noTransaksi,
+            $transaksi->toArray()
+        );
+        
+        return redirect()->route('bank-sampah.penyetoran.index')
+            ->with('success', 'Transaksi penyetoran berhasil ditambahkan!');
     }
-    
-    // Buat transaksi dengan bank_sampah_id yang sudah pasti ada
-    $transaksi = TransaksiPenyetoran::create([
-        'bank_sampah_id' => $bankSampahId, // Gunakan variable yang sudah di-handle
-        'user_id' => $user->id,
-        // field lainnya...
-    ]);
-    
-    return redirect()->route('bank-sampah.penyetoran.index')
-        ->with('success', 'Data berhasil ditambahkan');
-}
 
     public function show(TransaksiPenyetoran $penyetoran)
     {
@@ -132,6 +160,8 @@ class PenyetoranController extends Controller
 
         $oldData = $penyetoran->toArray();
 
+        $subtotal = $request->berat * $request->harga_per_satuan;
+
         $penyetoran->update([
             'jenis_sampah_id' => $request->jenis_sampah_id,
             'tanggal_setor' => $request->tanggal_setor,
@@ -140,6 +170,7 @@ class PenyetoranController extends Controller
             'berat' => $request->berat,
             'harga_per_satuan' => $request->harga_per_satuan,
             'keterangan' => $request->keterangan,
+            'subtotal' => $subtotal,
         ]);
 
         LogAktivitas::logUpdate(
