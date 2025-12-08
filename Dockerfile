@@ -18,10 +18,13 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && composer install --no-interaction --optimize-autoloader
 
 # NPM install + build Vite
+RUN rm -rf public/build
 RUN npm install
 RUN npm run build
 
 # Clear Laravel cache
+RUN rm -rf storage/framework/views/*
+RUN rm -rf storage/framework/cache/*
 RUN php artisan view:clear
 RUN php artisan config:clear
 RUN php artisan route:clear
