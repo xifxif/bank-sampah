@@ -17,6 +17,20 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\BankSampah\LaporanController as BankSampahLaporanController;
 use App\Http\Controllers\BankSampah\DashboardController as BankSampahDashboardController;
 
+use App\Models\User;
+
+Route::get('/fix-admin-pengelola', function () {
+    $user = User::where('email', 'pedulilingkungan@gmail.com')->first();
+    
+    if ($user) {
+        $user->bank_sampah_id = 1;
+        $user->save();
+        return 'User bank_sampah_id berhasil diupdate! Sekarang hapus route ini.';
+    }
+    
+    return 'User tidak ditemukan';
+})->middleware('auth');
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
