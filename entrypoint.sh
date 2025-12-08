@@ -11,15 +11,9 @@ done
 
 echo "✅ Database is ready!"
 
-# Run migrations
-echo "📦 Running migrations..."
-php artisan migrate --force
-
-# Run seeders
-echo "🌱 Running seeders..."
-php artisan db:seed --class=RoleSeeder --force
-php artisan db:seed --class=BankSampahSeeder --force
-php artisan db:seed --class=AdminSeeder --force
+# Jalankan migrate:fresh --seed (karena database masih kosong)
+echo "📦 Running migrate:fresh --seed..."
+php artisan migrate:fresh --seed --force
 
 # Clear permission cache
 echo "🔑 Clearing permission cache..."
